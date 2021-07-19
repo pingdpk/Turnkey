@@ -5,10 +5,12 @@
 # f1 : First raw file
 # f2 : Second file (line by line separated)
 from timer import timer
+#from multiprocessing import Pool, cpu_count
 
+#print('cpu : ', cpu_count())
 
-f1=open("../output/3x5K.txt", "r", encoding='utf8')
-f2=open("../output/3x5K_out.txt", "w")
+f1=open("/Users/a-5156/DeepShared/Turnkey/output/3x5K.txt", "r", encoding='utf8') #todo : absolute
+f2=open("/Users/a-5156/DeepShared/Turnkey/output/3x5K_out.txt", "w")
 #s=f1.read()
 
 
@@ -19,7 +21,7 @@ def find_between_with_split(line, delimeter, cutAt, index ):
         return "find_between_with_split : Error finding ## in the line"
 
 
-def custom_readbuffer(handle, line_separator="\n", new_line="\n", chunk_size=64):
+def custom_readbuffer(handle, line_separator="\n", new_line="\n", chunk_size=100000000): #8192
     buf = "" 
     while not handle.closed:  
         data = handle.read(chunk_size)  
