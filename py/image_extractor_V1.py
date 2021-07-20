@@ -1,9 +1,16 @@
+# @Program   : Image Extractor
+# @Usage     : To extract image content and then to convert to human readable format
+# @Auther    : Deepak Edakkott
+# @Date      : 20th July 2021
+# @Version   : v1.0
+
+
 import csv
 import timeit
 
 
-inputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/3x5K_1.txt"
-outputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/MainFilePiped_out.csv"
+inputFilePath = "/DeepShared/Turnkey/input/hexadecimal_inputfile_provided.txt"
+outputFilePath = "/DeepShared/Turnkey/output/image_extractor.csv"
 
 
 def timer(number, repeat):
@@ -14,13 +21,6 @@ def timer(number, repeat):
 
 f1=open(inputFilePath, "r", newline='') 
 f2=open(outputFilePath, "w")
-
-#self = {'file' : "/DeepShared/Turnkey/output/3x5K_1.txt"}
-
-def read_file():
-    with open("/Users/a-5156/DeepShared/Turnkey/output/3x5K_1.txt", 'r') as f:
-        data = [row for row in csv.reader(f.read().replace('%@_@%', '|').replace('_@%@_', '\n').splitlines(), dialect=csv.excel, delimiter='\n')]
-    return data
 
 def replaceSpaceAndNewLine():
     replacedData = []
