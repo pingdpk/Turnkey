@@ -8,10 +8,9 @@
 import csv
 import timeit
 
-inputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/3x5K_1.txt"
-outputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/MainFilePiped_out.csv"
-#inputFilePath = "/DeepShared/Turnkey/input/hexadecimal_inputfile_provided.txt"
-#outputFilePath = "/DeepShared/Turnkey/output/image_extractor.csv"
+
+inputFilePath = "/DeepShared/Turnkey/input/hexadecimal_inputfile_provided.txt"
+outputFilePath = "/DeepShared/Turnkey/output/image_extractor.csv"
 
 
 def timer(number, repeat):
