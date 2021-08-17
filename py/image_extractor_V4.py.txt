@@ -19,7 +19,6 @@ base_path = ''
 processed_dir_name = 'processed'
 not_processed_dir_name = 'unprocessed'
 log_dir_name = 'log'
-output_dir_name = 'output'
 
 input_file_space = '%@_@%'
 input_file_new_line = '_@%@_'
@@ -47,16 +46,21 @@ column_names += 'TAG_VALUE_5' + output_delimiter            #column heading 13
 
 
 # ------- Get file name from given path ---------->>>>
-def getFileName(filePath):
-    return os.path.basename(filePath)
+def getFileName(inputFilePath):
+    return os.path.basename(inputFilePath)
 # ------- Get file name from given path ----------<<<<
 
 
 # ------- Getting arguments -------->>>
 parser = argparse.ArgumentParser()
+
 parser.add_argument("-i", "--input", help = "Input file path", required=True)
+parser.add_argument("-o", "--output", help = "Output directory path", required=True)
+
 args = parser.parse_args()
+
 inputFilePath = args.input
+outputDirectoryPath = args.output
 # ------- Getting arguments --------<<<
 
 
@@ -89,17 +93,6 @@ def timer(number, repeat):
 
 
 
-# ------- Make 'output' directory ------->>>>
-outputDir = os.path.join(base_path, output_dir_name) #with user given path
-if not base_path or not os.access(outputDir, os.W_OK): 
-    base_path = os.path.dirname(os.path.realpath(__file__))
-    outputDir = os.path.join(base_path, output_dir_name) #with current directory path
-if not os.path.exists(outputDir):
-    os.makedirs(outputDir)
-# ------- Make 'output' directory -------<<<<<
-
-
-
 # ------- Make 'processed' directory ------->>>>
 processedDir = os.path.join(base_path, processed_dir_name) #with user given path
 if not base_path or not os.access(processedDir, os.W_OK): 
@@ -125,7 +118,7 @@ def getUnProcessedDir():
 
 
 # ------- Open input & output files ------->>>>
-outputFilePath = os.path.join(outputDir, \
+outputFilePath = os.path.join(outputDirectoryPath, \
                 getFileName(inputFilePath).replace('.', '_')  \
                 + '__out_' \
                 + time_key \
@@ -209,8 +202,7 @@ f2.close
 if os.path.isfile(inputFilePath):
     os.replace(inputFilePath, os.path.join(processedDir, getFileName(inputFilePath)))
     logger.info('The file has been processed successfully and moved to `' + processed_dir_name \
-            + '` directory | Output file : ' + getFileName(outputFilePath) \
-            + ' | Time taken: ' + process_total_time_taken \
+            + '` directory | Time taken: ' + process_total_time_taken \
             + ' seconds | No. of records in file: ' + total_number_of_records)
 # -------- Move executed files to 'processed' directory ---------<<<<
 
