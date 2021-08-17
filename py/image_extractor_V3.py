@@ -11,6 +11,9 @@ from datetime import datetime
 
 # ------- These can be change if required ------->>>
 
+#inputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/3x5K_1.txt"
+#outputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/MainFilePiped_out.csv"
+
 inputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/3x5K_1.txt"
 outputFilePath = "/Users/a-5156/DeepShared/Turnkey/output/MainFilePiped_out.csv"
 
