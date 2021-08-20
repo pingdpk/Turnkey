@@ -28,6 +28,8 @@ output_delimiter = '|'
 output_file_extension = '.csv'
 log_file_name = 'image_extractor.log'
 
+no_error = True
+
 # column names : Should not change format/position/add/remove. You can change name/spelling/capitalize..
 column_names = 'uti' + output_delimiter                     #column heading 1
 column_names += 'msg_type' + output_delimiter               #column heading 2
@@ -41,7 +43,7 @@ column_names += 'TAG_VALUE_1' + output_delimiter            #column heading 9
 column_names += 'TAG_VALUE_2' + output_delimiter            #column heading 10
 column_names += 'TAG_VALUE_3' + output_delimiter            #column heading 11
 column_names += 'TAG_VALUE_4' + output_delimiter            #column heading 12
-column_names += 'TAG_VALUE_5' + output_delimiter            #column heading 13
+column_names += 'TAG_VALUE_5'                               #column heading 13
 # ------- These can be change if required -------<<<
 
 
@@ -171,13 +173,24 @@ def doAllConversions(actualData):
     
     binaryRow = getBytesFromHexa(hexaContent)
     isoToUTF = getDecodedFromArabic(binaryRow)
+
+    # move return to above
+    # get full line
+    # count number of delimiter 
+    # make it 12
+    # if didn't worked... put in array, set pipe 12
+    # End of each line should have \x0a\x0d
     
     # column 8 to last column are created and first seven columns included to it, here
-    return isoToUTF.replace('\r\n', '~~')\
+    singleRecordArr = (isoToUTF.replace('\r\n', '^^^^^^^^^^~~')\
                                 .replace('~~:', '###')\
                                 .replace(':', output_delimiter)\
                                 .replace('~~', output_delimiter)\
-                                .replace('###', '\n' + firstSevenColumns)
+                                .replace('###', '\n#~#' + firstSevenColumns)).split('#~#')
+
+    print(' --- ' + str(len(singleRecordArr))) 
+    print(' --- ' + str(singleRecordArr[0]) + ' | ' + str(singleRecordArr[3].count('|')))
+    return ''.join(singleRecordArr)
 
 
 @timer(1,1)
@@ -192,6 +205,8 @@ def main():
 
         f2.write(output)
     except Exception as e:
+        global no_error
+        no_error = False
         err_msg = 'Error : Some problem happened.'
         err_msg += ' The input file will be moved to the `' + not_processed_dir_name
         err_msg += '` directory. Please try running this file manually | Exception ::: '
@@ -215,10 +230,11 @@ if os.path.isfile(inputFilePath):
 # -------- Move executed files to 'processed' directory ---------<<<<
 
 # Print process details (for manual run)
-process_end_time = str(datetime.now())
-print('\nNo. of records found in file : ' + total_number_of_records)
-print('\nInput file : ' + inputFilePath)
-print('Output file : ' + outputFilePath)
-print('\nStart time : ' + process_start_time + \
-        '\nEnd time : ' + process_end_time + \
-        '\nTotal time taken : ' + process_total_time_taken)
+if no_error:
+    process_end_time = str(datetime.now())
+    print('\nNo. of records found in file : ' + total_number_of_records)
+    print('\nInput file : ' + inputFilePath)
+    print('Output file : ' + outputFilePath)
+    print('\nStart time : ' + process_start_time + \
+            '\nEnd time : ' + process_end_time + \
+            '\nTotal time taken : ' + process_total_time_taken)
