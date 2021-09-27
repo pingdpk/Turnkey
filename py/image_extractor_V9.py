@@ -30,7 +30,7 @@ input_file_new_line = '_@%@_'
 
 # output delimter : should provide a character which will not be already present in the input file
 output_delimiter = '|'
-LF_char = '\\n' # It's \n
+LF_char = '' # You may provide (will show at the end of each line in the output)
 output_file_extension = '.csv'
 output_time_format = '%Y%m%d%H%M%S'
 output_file_codec = 'utf-8'
@@ -63,7 +63,7 @@ column_headers += 'TAG_VALUE_1' + output_delimiter            #column heading 9
 column_headers += 'TAG_VALUE_2' + output_delimiter            #column heading 10
 column_headers += 'TAG_VALUE_3' + output_delimiter            #column heading 11
 column_headers += 'TAG_VALUE_4' + output_delimiter            #column heading 12
-column_headers += 'TAG_VALUE_5' + output_delimiter            #column heading 13
+column_headers += 'TAG_VALUE_5'                               #column heading 13
 # ------- Configurable values -------<<<<<<<<<<<<
 
 
@@ -221,7 +221,6 @@ def doAllConversions(actualData):
                                 .replace(':', output_delimiter)\
                                 .replace('~~', output_delimiter))
                                 
-
     key_txn = ''
     res_lines = []
     for line in decodedRecord.splitlines():
@@ -233,15 +232,16 @@ def doAllConversions(actualData):
                    continue
                 if (len(data)>1):
                    key_txn = data[1]
-            #sengul: res_lines.append(firstColumns + key_txn + output_delimiter + line + LF_char) we dont need LF_char
-            res_lines.append(firstColumns + key_txn + output_delimiter + line)
+            res_lines.append(firstColumns + key_txn + output_delimiter + line + LF_char)
 
     return '\n' + '\n'.join(res_lines)
 
 @timer(1,1)
 def main():
-    #sengul: headings are repeating with each uti if keep headers here. I have closed the line.
-    #output = column_headers
+    with codecs.open(outputFilePath, "a", output_file_codec) as outputTextFile:
+        outputTextFile.write(column_headers)
+    closeOpenedFile(outputTextFile)
+
     try:
         with open(inputFilePath, 'r') as inputTextFile:
             for line in chunked_read(inputTextFile, input_file_new_line):
@@ -256,9 +256,10 @@ def main():
                         outputTextFile.write(converted)
                     closeOpenedFile(outputTextFile)
 
-        with codecs.open(outputFilePath, "a", output_file_codec) as outputTextFile:
-            outputTextFile.write(LF_char)
-        closeOpenedFile(outputTextFile)
+        if LF_char:
+            with codecs.open(outputFilePath, "a", output_file_codec) as outputTextFile:
+                outputTextFile.write(LF_char)
+            closeOpenedFile(outputTextFile)
         closeOpenedFile(inputTextFile)
 
     except Exception as e:
