@@ -1,8 +1,8 @@
-# @Program   : Image Extractor
+# @Program   : Single message parser
 # @Usage     : To extract image content and then to convert to human readable table format
 # @Auther    : Deepak Edakkott
-# @Date      : 26th Aug 2021
-# @Version   : v8.1     #Sengul
+# @Date      : 17th Oct 2021
+# @Version   : v1
 
 
 import timeit
@@ -11,7 +11,6 @@ import argparse
 import os
 import logging
 import traceback
-#sengul: import codecs added for utf-8 conversion
 import codecs
 
 
